@@ -1,18 +1,20 @@
 package com.will.leetcode;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class TicTacToe {
 	//0 is empty, 9 is user, 1 is computer.
+//	int [][] data = new int[][]{{9,9,1},{0,1,0},{0,0,0}};
 	int [][] data = new int[][]{{0,0,0},{0,0,0},{0,0,0}};
 	String winner = "";
 	
 	public static void main(String[] args) throws Exception {
 		TicTacToe t = new TicTacToe();
-		t.print();
 		System.out.println("Enter Your Move: ");
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		while(! t.isOver()) {
@@ -58,6 +60,8 @@ public class TicTacToe {
 		return true;
 	}
 	
+
+	
 	private boolean win(int sum) {
 		if (sum == 3) {
 		this.winner = "Computer is winning";
@@ -70,131 +74,126 @@ public class TicTacToe {
 	}
 
 	public void move(int i, int j) {
+		if (data[i][j] != 0)  {
+			System.out.println("invalid move,choose another one"); 
+		} else {
 		data[i][j] = 9;
 		if (!this.isOver()) {
-			this.computerMove();
+			List<String> moves = new ArrayList<String>();
+			this.print();
+			this.computerMove(true, 0, moves);
+			String[] keys = moves.get(moves.size()-1).split("_");
+			data[Integer.valueOf(keys[0])][Integer.valueOf(keys[1])] = 1;
 		}
 		//computer move:
-		
+		}
 	}
 	
-	public void computerMove() {
-		//offence
-		int sum1 = data[0][0] + data[1][1] + data[2][2];
-		if (sum1 == 2) {
-			if (data[0][0] == 0) data[0][0] = 1;
-			if (data[1][1] == 0) data[1][1] = 1;
-			if (data[2][2] == 0) data[2][2] = 1;
-			return;
-		} 
-		
-		int sum2 = data[0][2] + data[1][1] + data[2][0];
-		if (sum2 == 2) {
-			if (data[0][2] == 0) data[0][2] = 1;
-			if (data[1][1] == 0) data[1][1] = 1;
-			if (data[2][0] == 0) data[2][0] = 1;
-			return;
-		} 
-		
-		for (int i = 0; i < 3; i++) {
-			int sum3 = data[i][0] + data[i][1] + data[i][2];
-			if (sum3 == 2) {
-				if (data[i][0] == 0) data[i][0] = 1;
-				if (data[i][1] == 0)data[i][1]= 1;
-				if (data[i][2]== 0)data[i][2] = 1;
-				return;
-			}
-			
-			int sum4 = data[0][i] + data[1][i] + data[2][i];
-			if (sum4 == 2) {
-				if (data[0][i]== 0) data[0][i] = 1;
-				if (data[1][i] == 0) data[1][i] = 1;
-				if (data[2][i] == 0) data[2][i]= 1;
-				return;
-			}
-		}
-		
-		//defence move
-		sum1 = data[0][0] + data[1][1] + data[2][2];
-		if (sum1 == 18) {
-			if (data[0][0] == 0) data[0][0] = 1;
-			if (data[1][1] == 0) data[1][1] = 1;
-			if (data[2][2] == 0) data[2][2] = 1;
-			return;
-		} 
-		
-		sum2 = data[0][2] + data[1][1] + data[2][0];
-		if (sum2 == 18) {
-			if (data[0][2] == 0) data[0][2] = 1;
-			if (data[1][1] == 0) data[1][1] = 1;
-			if (data[2][0] == 0) data[2][0] = 1;
-			return;
-		} 
-		
-		for (int i = 0; i < 3; i++) {
-			int sum3 = data[i][0] + data[i][1] + data[i][2];
-			if (sum3 == 18) {
-				if (data[i][0] == 0) data[i][0] = 1;
-				if (data[i][1] == 0)data[i][1]= 1;
-				if (data[i][2]== 0)data[i][2] = 1;
-				return;
-			}
-			
-			int sum4 = data[0][i] + data[1][i] + data[2][i];
-			if (sum4 == 18) {
-				if (data[0][i]== 0) data[0][i] = 1;
-				if (data[1][i] == 0) data[1][i] = 1;
-				if (data[2][i] == 0) data[2][i]= 1;
-				return;
-			}	
-		}
-		
-		sum1 = data[0][0] + data[1][1] + data[2][2];
-		if (sum1 == 0) {
-			data[0][0] = 1;
-			return;
-		} else if (sum1 == 1 ) {
-			if (data[2][2] == 0) data[2][2] = 1; else  data[1][1] = 1;
-			return;
-		} 
-		
-		sum2 = data[0][2] + data[1][1] + data[2][0];
-		if (sum2 == 0) {
-			data[0][2] = 1;
-			return;
-		} else if (sum2 == 1) {
-			if (data[2][0] == 0) data[2][0] = 1; else  data[1][1] = 1;
-			return;
-		}
-		
-		for (int i = 0; i < 3; i++) {
-			int sum3 = data[i][0] + data[i][1] + data[i][2];
-			if (sum3 == 0) {
-				data[i][0] = 1;
-				return;
-			}	 else if (sum3 == 1 ) {
-				if (data[i][2]== 0) data[i][2] = 1; else  data[i][1] = 1;
-				return;
-			}
-			
-			int sum4 = data[0][i] + data[1][i] + data[2][i];
-			if (sum4 == 0) {
-				data[0][i]= 1;
-				return;
-			}	 else if (sum4 == 1 ) {
-				if (data[2][i] == 0)data[2][i] = 1; else  data[1][i]= 1;
-				return;
-			}
-		}
-		
+	public List<String> findOptions() {
+		List<String> options = new ArrayList<String>();
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[i].length; j++) {
 				if (data[i][j] == 0) {
-					data[i][j] = 1;
-					return;
+					options.add(i+"_"+j);
 				}
 			}
-		} 
+		}
+		return options;
 	}
+	
+	public int computerMove(boolean isComputer,int start, List<String> moves) {
+		int score =  this.score();
+		List<String> options = this.findOptions();
+		if (score == 10 || score == -10) {
+			return score;
+		} else if (options.size() == 0) {
+			return score;
+		}
+		
+		if (isComputer) {
+			int bestValue = Integer.MIN_VALUE;
+			String bestMove = "";
+			for (int i = 0; i < options.size(); i++) {
+			//computer move Max
+				String[] keys = options.get(i).split("_");
+				int f = Integer.valueOf(keys[0]);
+				int s = Integer.valueOf(keys[1]);
+				
+				this.data[f][s] = 1;
+				if (this.score() == 10) {
+					bestValue = 10;
+					bestMove = options.get(i);
+					this.data[f][s] = 0;
+					break;
+				}
+				int possibleBestMoveFromOpponent = this.computerMove(false, start+1, moves);
+//				if (start == 0) System.out.println("Computer possibleBestMoveFromOpponent" + possibleBestMoveFromOpponent + options.get(i));
+				if (possibleBestMoveFromOpponent > bestValue) {
+					bestValue = possibleBestMoveFromOpponent;
+					bestMove = options.get(i);
+				}
+				
+				this.data[f][s] = 0;
+			}
+			moves.add(bestMove);
+			if (start == 0) System.out.println(bestMove);
+//			System.out.println(isComputer + " " + bestMove + " " + bestValue + " | " + start);
+			return bestValue;
+		} else {//user move min value
+			int bestValue = Integer.MAX_VALUE;
+			String bestMove = "";
+			for (int i = 0; i < options.size(); i++) {
+			//user move min
+				String[] keys = options.get(i).split("_");
+				int f = Integer.valueOf(keys[0]);
+				int s = Integer.valueOf(keys[1]);
+				
+				this.data[f][s] = 9;
+				if (this.score() == -10) {
+					bestValue = -10;
+					bestMove = options.get(i);
+					this.data[f][s] = 0;
+					break;
+				}
+				int possibleBestMoveFromOpponent = this.computerMove(true, start+1, moves);
+//				if (start == 0) System.out.println("User possibleBestMoveFromOpponent" + possibleBestMoveFromOpponent + options.get(i));
+				if (possibleBestMoveFromOpponent < bestValue) {
+					bestValue = possibleBestMoveFromOpponent;
+					bestMove = options.get(i);
+				}
+				this.data[f][s] = 0;
+			}
+			if (start == 0) System.out.println(bestMove);
+//			System.out.println(isComputer + " " + bestMove + " " + bestValue + " | " + start);
+			moves.add(bestMove);
+			return bestValue;
+		}
+			
+	}
+	
+	
+	public int score() {
+		//8 scenario:
+		boolean result = false;
+		for (int i = 0; i < 3; i++) {
+			int sum = data[i][0] + data[i][1] + data[i][2];
+			if (sum == 3) return 10;//computer
+			if (sum == 27) return -10;//user
+			
+			sum = data[0][i] + data[1][i] + data[2][i];
+			if (sum == 3) return 10;//computer
+			if (sum == 27) return -10;//user
+		}
+		
+		int sum = data[0][0] + data[1][1] + data[2][2];
+		if (sum == 3) return 10;//computer
+		if (sum == 27) return -10;//user
+		sum = data[0][2] + data[1][1] + data[2][0];
+		if (sum == 3) return 10;//computer
+		if (sum == 27) return -10;//user
+		
+		return 0;
+	}
+	
 
 }
