@@ -1,7 +1,9 @@
 package com.will.leetcode;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -56,7 +58,26 @@ public class ValidUtf8 {
         return stack.isEmpty();
     }
 	public static void main(String[] args) {
+		int[][] test = new int[][]   {{3,3},{5,-1},{-2,4}};
+		PriorityQueue q = new PriorityQueue();
+		q.add(10);
+		q.add(3);
+		q.add(0);
+		q.poll();
 		
+		System.out.println(q);
+			
+		for (int i = 0; i < test.length; i++) {
+			
+			int v = test[i][0]*test[i][0] + test[i][1]* test[i][1];
+			System.out.println(v + " " +  (test[i][1]*test[i][1]));
+		}
+		
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(1, 2);
+		map.put(13, 23);
+		Integer[] t = map.keySet().toArray(new Integer[0]);
 		System.out.println(Integer.toBinaryString(0b101011001 & 0b11000) +  "|" + (0b101011001) + "|" + 0b11000);
 		System.out.println(Integer.toBinaryString(1<<7) +  "|" + (1<<7));
 		System.out.println(Integer.toBinaryString(1197) +  "|" + (1197 & 128));
